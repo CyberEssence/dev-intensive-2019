@@ -1,5 +1,6 @@
 package ru.skillbranch.devintensive
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             else makeErrorMessage()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun makeErrorMessage() {
         val errorMessage = when(benderObj.question){
             Bender.Question.NAME -> "Имя должно начинаться с заглавной буквы"
@@ -86,7 +88,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
         outState.putString("STATUS", benderObj.status.name)
         outState.putString("QUESTION", benderObj.question.name)
     }
