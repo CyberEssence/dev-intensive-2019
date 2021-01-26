@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.models.Bender
+import java.util.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        benderImage = iv_cat
+        benderImage = iv_bender
         textTxt = tv_text
         messageEt = et_message
         sendBtn = iv_send
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         makeSendOnActionDone(messageEt)
         val status = savedInstanceState?.getString("STATUS") ?: Bender.Status.NORMAL.name
         val question = savedInstanceState?.getString("QUESTION") ?: Bender.Question.NAME.name
-        benderObj = Bender(Bender.Status.valueOf(status), Bender.Question.valueOf(status))
+        benderObj = Bender(Bender.Status.valueOf(status), Bender.Question.valueOf(question))
 
         var (r, g, b) = benderObj.status.color
         benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
@@ -79,7 +80,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun sendAnswer() {
-        val (phase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+        val (phase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase(Locale.ROOT))
         messageEt.setText("")
         val(r, g, b) = color
         benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
