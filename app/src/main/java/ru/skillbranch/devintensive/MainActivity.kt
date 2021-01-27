@@ -1,6 +1,5 @@
 package ru.skillbranch.devintensive
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
@@ -13,10 +12,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.models.Bender
-import java.util.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
-
     lateinit var benderImage: ImageView
     lateinit var textTxt: TextView
     lateinit var messageEt: EditText
@@ -33,13 +30,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         messageEt = et_message
         sendBtn = iv_send
 
-
         makeSendOnActionDone(messageEt)
         val status = savedInstanceState?.getString("STATUS") ?: Bender.Status.NORMAL.name
         val question = savedInstanceState?.getString("QUESTION") ?: Bender.Question.NAME.name
         benderObj = Bender(Bender.Status.valueOf(status), Bender.Question.valueOf(question))
 
-        var (r, g, b) = benderObj.status.color
+        val (r, g, b) = benderObj.status.color
         benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
 
         textTxt.text = benderObj.askQuestion()
@@ -55,15 +51,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        if(v?.id == R.id.iv_send)
-            if(isAnswerValid())
+        if (v?.id == R.id.iv_send)
+            if (isAnswerValid())
                 sendAnswer()
             else makeErrorMessage()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun makeErrorMessage() {
-        val errorMessage = when(benderObj.question){
+        val errorMessage = when (benderObj.question) {
             Bender.Question.NAME -> "Имя должно начинаться с заглавной буквы"
             Bender.Question.PROFESSION -> "Профессия должна начинаться со строчной буквы"
             Bender.Question.MATERIAL -> "Материал не должен содержать цифр"
@@ -80,9 +75,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun sendAnswer() {
-        val (phase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase(Locale.ROOT))
+        val (phase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
         messageEt.setText("")
-        val(r, g, b) = color
+        val (r, g, b) = color
         benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
         textTxt.text = phase
     }
